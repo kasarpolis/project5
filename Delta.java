@@ -7,15 +7,16 @@ import java.util.ArrayList;
  * Didn't receive help from anywhere
  *
  * @author Alexandra Sarpolis, asarpoli@purdue.edu; Ray Ye, yer@purdue.edu
- * @version 11/21/2019
+ * @version 12/2/2019
  */
 public class Delta implements Airline {
 
     private String name;
     private String info;
     private int spotsTaken = 0;
-    private ArrayList<Passenger> passengers;
+    private ArrayList<String> passengers;
     private Gate gate;
+    private int maxCapacity;
 
     public Delta() {
         name = "Delta";
@@ -25,6 +26,7 @@ public class Delta implements Airline {
                 "We also have comfortable seats and free Wifi for all of our passengers.<br>" +
                 "We hope you choose Delta Airlines for your next trip!";
         passengers = new ArrayList<>();
+        maxCapacity = 100;
     }
 
     public String getName() {
@@ -43,7 +45,7 @@ public class Delta implements Airline {
         spotsTaken++;
     }
 
-    public ArrayList<Passenger> getPassengers()
+    public ArrayList<String> getPassengers()
     {
         return passengers;
     }
@@ -56,6 +58,16 @@ public class Delta implements Airline {
     public Gate getGate()
     {
         return gate;
+    }
+
+    public void setSpotsTaken(int spotsTaken)
+    {
+        this.spotsTaken = spotsTaken;
+    }
+
+    public void setMaxCapacity(int maxCapacity)
+    {
+        this.maxCapacity = maxCapacity;
     }
 
 }
