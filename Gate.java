@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Didn't receive help from anywhere
  *
  * @author Alexandra Sarpolis, asarpoli@purdue.edu; Ray Ye, yer@purdue.edu
- * @version 11/21/2019
+ * @version 12/2/2019
  */
 public class Gate implements Serializable {
 
