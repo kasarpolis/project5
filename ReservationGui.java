@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -27,17 +26,34 @@ public class ReservationGui {
     private static Alaska a;
     private static Southwest s;
     private static Passenger p;
+    private static Socket clientSocket;
+    private static ObjectOutputStream objectOutputStream = null;
+    private static ObjectInputStream objectInputStream = null;
 
 
     public static void getIntroFlightSemantics(String hostname, String port) throws IOException {
         try
         {
-            Socket socket = new Socket(hostname, Integer.parseInt(port));
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            clientSocket = new Socket(hostname, Integer.parseInt(port));
+            objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
 
-            a = (Alaska) ois.readObject();
-            d = (Delta) ois.readObject();
-            s = (Southwest) ois .readObject();
+            a = (Alaska) objectInputStream.readObject();
+            d = (Delta) objectInputStream.readObject();
+            s = (Southwest) objectInputStream.readObject();
+
+        }
+        catch (IOException | ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        try
+        {
+            clientSocket = new Socket(hostname, Integer.parseInt(port));
+            objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
+
+            a = (Alaska) objectInputStream.readObject();
+            d = (Delta) objectInputStream.readObject();
+            s = (Southwest) objectInputStream.readObject();
 
         }
         catch (IOException | ClassNotFoundException e)
@@ -520,6 +536,41 @@ public class ReservationGui {
         scrollPane.setPreferredSize(new Dimension(300, 300));
         air.updateSpotsTaken();
         air.getPassengers().add(p.toString());
+        try {
+            int typeOfFlight = 0;
+            if (air instanceof Alaska)
+                typeOfFlight = 1;
+            else if (air instanceof Delta)
+                typeOfFlight = 2;
+            else if (air instanceof Southwest)
+                typeOfFlight = 3;
+
+
+            objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+            if (typeOfFlight == 1) {
+                a = (Alaska) air;
+                objectOutputStream.writeObject(a);
+                objectOutputStream.flush();
+
+
+            } else if (typeOfFlight == 2) {
+                d = (Delta) air;
+                objectOutputStream.writeObject(d);
+                objectOutputStream.flush();
+            }
+            else if (typeOfFlight == 3)
+            {
+                s = (Southwest) air;
+                System.out.println(objectOutputStream);
+                objectOutputStream.writeObject(s);
+                objectOutputStream.flush();
+
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
 
         JButton exit = new JButton("Exit");
         JButton refresh = new JButton("Refresh Flight Status");
@@ -531,6 +582,13 @@ public class ReservationGui {
                         " University Airline Management System!", "Thank you!", JOptionPane.PLAIN_MESSAGE);
                 {
                     frame.setVisible(false);
+
+                    try {
+                        objectInputStream.close();
+                        objectOutputStream.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
 
             }
