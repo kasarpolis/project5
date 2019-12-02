@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
 import java.lang.reflect.Array;
+import java.net.Socket;
 import java.util.ArrayList;
 
 /**
@@ -29,6 +30,20 @@ public class ReservationGui {
 
 
     public static void getIntroFlightSemantics(String hostname, String port) throws IOException {
+        try
+        {
+            Socket socket = new Socket(hostname, Integer.parseInt(port));
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+
+            a = (Alaska) ois.readObject();
+            d = (Delta) ois.readObject();
+            s = (Southwest) ois .readObject();
+
+        }
+        catch (IOException | ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
         JPanel panel = new JPanel();
         JPanel panel1 = new JPanel();
 
@@ -93,7 +108,6 @@ public class ReservationGui {
                     switch (msg) {
                         case "Delta":
                             lblText.setText("");
-                            d = new Delta();
                             air = d;
                             Gate deltaGate = new Gate('A', 16);
                             air.setGate(deltaGate);
@@ -103,7 +117,6 @@ public class ReservationGui {
                             break;
                         case "Alaska":
                             lblText.setText("");
-                            a = new Alaska();
                             air = a;
                             Gate alaskaGate = new Gate('B', 12);
                             air.setGate(alaskaGate);
@@ -113,7 +126,6 @@ public class ReservationGui {
                             break;
                         case "Southwest":
                             lblText.setText("");
-                            s = new Southwest();
                             air = s;
                             Gate southwestGate = new Gate('C', 7);
                             air.setGate(southwestGate);
