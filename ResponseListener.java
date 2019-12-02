@@ -5,12 +5,12 @@
  * Received some help from past labs and homeworks
  *
  * @author Alexandra Sarpolis, asarpoli@purdue.edu; Ray Ye, yer@purdue.edu
- * @version 11/21/2019
+ * @version 12/2/2019
  */
 
 
 public class ResponseListener extends ReservationClient {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         ReservationServer server;
 
         try {
