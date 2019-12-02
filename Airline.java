@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Didn't receive help from anywhere
  *
  * @author Alexandra Sarpolis, asarpoli@purdue.edu; Ray Ye, yer@purdue.edu
- * @version 11/21/2019
+ * @version 12/2/2019
  */
 
 public interface Airline extends Serializable {
@@ -21,9 +21,13 @@ public interface Airline extends Serializable {
 
     void updateSpotsTaken();
 
-    ArrayList<Passenger> getPassengers();
+    void setSpotsTaken(int spotsTaken);
+
+    ArrayList<String> getPassengers();
 
     void setGate(Gate gate);
 
     Gate getGate();
+
+    void setMaxCapacity(int capacity);
 }
