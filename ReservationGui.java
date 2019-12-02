@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
 /**
  * CS180 - Project 05
@@ -15,7 +14,7 @@ import java.util.ArrayList;
  * Received some ideas from HW13
  *
  * @author Alexandra Sarpolis, asarpoli@purdue.edu; Ray Ye, yer@purdue.edu
- * @version 11/21/2019
+ * @version 12/2/2019
  */
 
 public class ReservationGui {
@@ -32,20 +31,6 @@ public class ReservationGui {
 
 
     public static void getIntroFlightSemantics(String hostname, String port) throws IOException {
-        try
-        {
-            clientSocket = new Socket(hostname, Integer.parseInt(port));
-            objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
-
-            a = (Alaska) objectInputStream.readObject();
-            d = (Delta) objectInputStream.readObject();
-            s = (Southwest) objectInputStream.readObject();
-
-        }
-        catch (IOException | ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        }
         try
         {
             clientSocket = new Socket(hostname, Integer.parseInt(port));
@@ -561,7 +546,6 @@ public class ReservationGui {
             else if (typeOfFlight == 3)
             {
                 s = (Southwest) air;
-                System.out.println(objectOutputStream);
                 objectOutputStream.writeObject(s);
                 objectOutputStream.flush();
 
@@ -597,7 +581,6 @@ public class ReservationGui {
         refresh.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<String> newPassengers = new ArrayList<>();
                 int difference = air.getPassengers().size() - listModel.getSize();
                 for (int i = air.getPassengers().size() - difference; i < air.getPassengers().size(); i++) {
                     listModel.addElement(air.getPassengers().get(i));
