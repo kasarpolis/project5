@@ -22,7 +22,7 @@ public class ReservationServer {
         public void serveClients() throws InterruptedException {
             Socket clientSocket;
             ClientHandler handler;
-            Thread handlerThread;
+            Thread handlerThread = null;
             int connectionCount = 0;
 
             while (true) {
@@ -40,9 +40,11 @@ public class ReservationServer {
 
                 handlerThread.start();
 
+                handlerThread.sleep(1000);
 
             } //end while
 
+            handlerThread.join();
 
 
         } //serveClients
